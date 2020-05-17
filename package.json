@@ -2,8 +2,10 @@
   "name": "visao-comp-trab1",
   "version": "1.0.0",
   "description": "Utilizado o build do com o docker, descrito neste link:\r     https://github.com/opencv/opencv/blob/4.3.0/doc/js_tutorials/js_setup/js_setup/js_setup.markdown",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
+    "index": "cd src && node index.js",
+    "index_test1": "cd src && node index_test1.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
