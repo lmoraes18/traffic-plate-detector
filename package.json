@@ -18,7 +18,11 @@
   },
   "homepage": "https://github.com/lmoraes18/visao-comp-trab1#readme",
   "dependencies": {
+    "canvas": "^2.6.1",
     "core-js": "^3.6.5",
-    "jimp": "^0.11.0"
+    "glob": "^7.1.6",
+    "jimp": "^0.11.0",
+    "jsdom": "^16.2.2",
+    "mimic-response": "^2.1.0"
   }
 }
