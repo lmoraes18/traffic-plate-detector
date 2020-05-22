@@ -6,11 +6,10 @@ const state = require('./state.js');
 
 async function output() {
     const content = state.getContent();
-    const imageCV = content.imageCV;
+    const image = content.image;
     const outputFile = askOutputFile();
     
-    const output = cv.Mat.zeros(imageCV.rows, imageCV.cols, cv.CV_8UC3);
-    const canvas = createCanvas(imageCV.cols, imageCV.rows);
+    const canvas = createCanvas(image.cols, image.rows);
     
     prepareOutput();
     writeOutput();
@@ -22,7 +21,7 @@ async function output() {
     }
 
     function prepareOutput() {
-        cv.imshow(canvas, output);
+        cv.imshow(canvas, image);
     }
 
     function writeOutput() {
@@ -30,8 +29,7 @@ async function output() {
     }
 
     function clearData() {
-        imageCV.delete();
-        output.delete();
+        image.delete();
         state.setContent({});
     }
 }

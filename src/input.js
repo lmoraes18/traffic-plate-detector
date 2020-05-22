@@ -5,13 +5,14 @@ const state = require('./state.js');
 async function input() {
     const content = {};
     content.imgPath = askImage();
-    content.image = await loadImageFromImgPath();
-    content.imageCV = createImageCV();
+    content.imageCanvas = await loadImageFromImgPath();
+    content.imageInput = createImageCV();
+    content.image = content.imageInput;
     state.setContent(content);
 
     function askImage() {
         //return readline.question('Image input: ');
-        return './images/apenas placa.jpg';
+        return './images/placa carro 1.jpg';
     }
 
     async function loadImageFromImgPath() {
@@ -19,7 +20,7 @@ async function input() {
     }
 
     function createImageCV() {
-        return cv.imread(content.image);
+        return cv.imread(content.imageCanvas);
     }
 }
 

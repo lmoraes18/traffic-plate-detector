@@ -4,8 +4,13 @@ const state = require('./state.js');
 
 async function setup() {
 
+    console.log("initializing jsdom");
     installDOM();
+    console.log("jsdom initialized");
+
+    console.log("initializing opencv");
     await loadOpenCV();
+    console.log("opencv initialized");
 
     // Using jsdom and node-canvas we define some global variables to emulate HTML DOM.
     // Although a complete emulation can be archived, here we only define those globals used
