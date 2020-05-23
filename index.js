@@ -14,7 +14,7 @@ async function start() {
     await input();
 
     await rgbToGray();
-    await histogram.equalize();
+    //await histogram.equalize();
     await threshold();      // binarizar
     await blur();           // tirar ruidos da imagem
 
