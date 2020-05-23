@@ -7,8 +7,12 @@ const state = require('./state.js');
 async function run() {
     const content = state.getContent();
     const image = content.image;
+    let dst = new cv.Mat();
 
-    cv.threshold(image, image, 100, 255, cv.THRESH_BINARY);
+    let ksize = new cv.Size(5, 5);
+    cv.GaussianBlur(image, dst, ksize, 0, 0, cv.BORDER_DEFAULT);
+
+    content.image = dst;
 }
 
 module.exports = run;
