@@ -27,3 +27,6 @@
     https://docs.opencv.org/master/d7/dd0/tutorial_js_thresholding.html
     https://docs.opencv.org/master/d7/de1/tutorial_js_canny.html
     https://docs.opencv.org/master/d3/de6/tutorial_js_houghlines.html
+
+### baseado em
+    https://www.youtube.com/watch?v=pDA4mncyJ8Q
