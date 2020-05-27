@@ -10,7 +10,12 @@ function getContent() {
     return stage;
 }
 
+function clear() {
+    stage = null;
+}
+
 module.exports = {
     setContent,
-    getContent
+    getContent,
+    clear
 };

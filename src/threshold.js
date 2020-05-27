@@ -4,11 +4,11 @@ const state = require('./state.js');
 
 // TODO trocar por implementacao manual
 
-async function run() {
+function run() {
     const content = state.getContent();
     const image = content.image;
 
-    cv.threshold(image, image, 100, 255, cv.THRESH_BINARY);
+    cv.threshold(image, image, 90, 255, cv.THRESH_BINARY);
 }
 
 module.exports = run;

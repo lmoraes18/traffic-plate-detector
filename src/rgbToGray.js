@@ -4,7 +4,7 @@ const state = require('./state.js');
 
 // TODO trocar por implementacao manual
 
-async function run() {
+function run() {
     const content = state.getContent();
     const image = content.image;
 

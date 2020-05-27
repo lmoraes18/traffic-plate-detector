@@ -13,14 +13,16 @@ async function start() {
     await setup();
     await input();
 
-    await rgbToGray();
+    rgbToGray();
     //await histogram.equalize();
-    await threshold();      // binarizar
-    await blur();           // tirar ruidos da imagem
+    threshold();      // binarizar
+    blur();           // tirar ruidos da imagem
 
-    await contours();
+    contours.findContours();
+    contours.drawContours();
 
-    await output();
+    output.output();
+    state.clear();
 }
 
 start();
