@@ -9,6 +9,7 @@ async function input() {
 
     const content = {};
     content.imgPath = imgPath;
+    content.imgOriginal = image.clone();
     content.image = image;
     state.setContent(content);
 

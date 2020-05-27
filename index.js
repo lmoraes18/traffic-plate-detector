@@ -19,9 +19,11 @@ async function start() {
     blur();           // tirar ruidos da imagem
 
     contours.findContours();
-    contours.drawContours();
+    // contours.drawContours();
+    contours.drawRects();
 
     output.output();
+    output.outputRectsFromOriginal('./out');
     state.clear();
 }
 
