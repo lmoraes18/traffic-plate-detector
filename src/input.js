@@ -2,7 +2,7 @@ const { Canvas, createCanvas, Image, ImageData, loadImage } = require('canvas');
 const { JSDOM } = require('jsdom');
 const state = require('./state.js');
 
-async function input() {
+async function read() {
     const imgPath = askImage();
     const imageCanvas = await loadImageFromImgPath(imgPath);
     const image = cv.imread(imageCanvas);
@@ -23,4 +23,15 @@ async function input() {
     }
 }
 
-module.exports = input
+function resetCurrentImage() {
+    const content = state.getContent();
+    const imgOriginal = content.imgOriginal;
+
+    content.image.delete();
+    content.image = imgOriginal.clone();
+}
+
+module.exports = {
+    read: read,
+    resetCurrentImage: resetCurrentImage
+}

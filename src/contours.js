@@ -11,19 +11,24 @@ function findContours() {
     let hierarchy = new cv.Mat();
     let rects = [];
 
-    cv.findContours(image, contours, hierarchy, cv.RETR_TREE, cv.CHAIN_APPROX_NONE);
+    cv.findContours(image, contours, hierarchy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
     
     for(let i = 0; i < contours.size(); i++) {
         const cnt = contours.get(i);
         const perimeter = cv.arcLength(cnt, true);
 
-        if (perimeter > 120) {
+        if (perimeter > 70) {
             let tmp = new cv.Mat();
             cv.approxPolyDP(cnt, tmp, 0.03 * perimeter, true);
     
             if (tmp.size().width * tmp.size().height == 4) {
                 let rect = cv.boundingRect(cnt);
-                rects.push(rect);
+                
+                const ratio = rect.height / rect.width;
+                if (ratio > 0.29 && ratio < 0.35) { // 0.32 is the ratio in image 1
+                    rects.push(rect);
+                }
+
             }
         }
     }

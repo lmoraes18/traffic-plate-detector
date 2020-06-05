@@ -27,4 +27,4 @@ async function onRuntimeInitialized(){
 Module = {
   onRuntimeInitialized
 };
-cv = require('../libs/opencv.js');
+cv = require('../../libs/opencv.js');
