@@ -18,7 +18,7 @@ function findPercValueThreshold(perc) {
 
     let hist = findHistogram();
     let s = 0, i = 0;
-    for(; i < 256; i++){
+    for(; i < 256; i++) {
         s += hist[i];
         if (s/imgPixels >= perc) break;
     }

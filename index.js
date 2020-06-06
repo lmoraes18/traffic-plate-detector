@@ -1,29 +1,39 @@
 const state = require('./src/state.js');
 const setup = require('./src/setup.js');
-const input = require('./src/input.js');
-const output = require('./src/output.js');
+const io = require('./src/io.js');
 
 const rgbToGray = require('./src/rgbToGray.js');
 const histogram = require('./src/histogram.js');
 const threshold = require('./src/threshold.js');
-const blur = require('./src/blur.js');
+const convolution = require('./src/convolution.js');
 const contours = require('./src/contours.js');
+const morphoTransformation = require('./src/morphoTransformation.js');
 
 async function start() {
     await setup();
-    await input();
+    await io.read();
 
+    const content = state.getContent();
+
+    io.roiImage();
     rgbToGray();
-    //await histogram.equalize();
-    threshold();      // binarizar
-    blur();           // tirar ruidos da imagem
 
-    contours.findContours();
+    convolution.highPassFilter();
+    threshold.otsu();
+
+    // implementar houghs
+
+    
+
+    // contours.findContours();
     // contours.drawContours();
-    contours.drawRects();
+    // contours.drawRects();
 
-    output.output();
-    output.outputRectsFromOriginal('./out');
+    const rects = content.rects;
+    console.log("encontrados " + rects.length + " candidatos");
+    io.output();
+    io.outputOriginal();
+    //output.outputRectsFromOriginal('./out');
     state.clear();
 }
 
