@@ -8,6 +8,7 @@ const threshold = require('./src/threshold.js');
 const convolution = require('./src/convolution.js');
 const contours = require('./src/contours.js');
 const morphoTransformation = require('./src/morphoTransformation.js');
+const hough = require('./src/hough.js');
 
 async function start() {
     await setup();
@@ -19,18 +20,22 @@ async function start() {
     rgbToGray();
 
     convolution.highPassFilter();
+    convolution.gaussianBlur(5);
     threshold.otsu();
 
-    // implementar houghs
+    // morphoTransformation.close(3)
 
-    
+    hough.houghLines();
+    hough.drawLines();
+
+
 
     // contours.findContours();
     // contours.drawContours();
     // contours.drawRects();
+    // const rects = content.rects;
+    // console.log("encontrados " + rects.length + " candidatos");
 
-    const rects = content.rects;
-    console.log("encontrados " + rects.length + " candidatos");
     io.output();
     io.outputOriginal();
     //output.outputRectsFromOriginal('./out');

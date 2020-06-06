@@ -18,7 +18,7 @@ async function read() {
 
     function askImage() {
         //return readline.question('Image input: ');
-        return './images/placa carro 3.jpg';
+        return './images/placa carro 1.jpg';
     }
 
     async function loadImageFromImgPath(imgPath) {
@@ -43,8 +43,8 @@ function roiImage() {
     let rect = {
         x: Math.trunc(image.cols * 0.20),
         width: Math.trunc(image.cols * 0.60),
-        y: Math.trunc(image.rows * 0.45),
-        height: Math.trunc(image.rows * 0.40)
+        y: Math.trunc(image.rows * 0.35),
+        height: Math.trunc(image.rows * 0.50)
     };
     
     // draw
