@@ -5,8 +5,8 @@ const { writeFileSync } = require('fs');
 const readline = require('readline-sync');
 
 
-async function read() {
-    const imgPath = askImage();
+async function read(imagePath) {
+    const imgPath = askImage(imagePath);
     const imageCanvas = await loadImageFromImgPath(imgPath);
     const image = cv.imread(imageCanvas);
 
@@ -16,9 +16,12 @@ async function read() {
     content.image = image;
     state.setContent(content);
 
-    function askImage() {
-        //return readline.question('Image input: ');
-        return './images/placa carro 1.jpg';
+    function askImage(imagePath) {
+        if (imagePath) {
+            return imagePath;
+        } else {
+            return readline.question('Image input: ');
+        }
     }
 
     async function loadImageFromImgPath(imgPath) {

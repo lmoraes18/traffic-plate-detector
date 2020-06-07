@@ -6,6 +6,7 @@ const { writeFileSync } = require('fs');
 function findContours() {
     const content = state.getContent();
     const image = content.image;
+    const perimeterThreshold = image.cols * 1.4 + image.rows * 1.4
 
     let contours = new cv.MatVector();
     let hierarchy = new cv.Mat();
@@ -17,7 +18,7 @@ function findContours() {
         const cnt = contours.get(i);
         const perimeter = cv.arcLength(cnt, true);
 
-        if (perimeter > 70) {
+        if (perimeter > 70 && perimeter < perimeterThreshold) {
             let tmp = new cv.Mat();
             cv.approxPolyDP(cnt, tmp, 0.03 * perimeter, true);
     
@@ -25,7 +26,7 @@ function findContours() {
                 let rect = cv.boundingRect(cnt);
                 
                 const ratio = rect.height / rect.width;
-                if (ratio > 0.29 && ratio < 0.35) { // 0.32 is the ratio in image 1
+                if (ratio > 0.29 && ratio < 0.45) { // 0.32 is the ratio in image 1
                     rects.push(rect);
                 }
 

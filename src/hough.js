@@ -18,11 +18,15 @@ function houghLines() {
     content.linesH = linesH;
 }
 
-function drawLines() {
+function drawLines(newImage) {
     const content = state.getContent();
     let image = content.image;
     let linesV = content.linesV;
     let linesH = content.linesH;
+
+    if (newImage) {
+        content.image = image = cv.Mat.zeros(image.rows, image.cols, cv.CV_8UC1);
+    }
 
     draw(linesV);
     draw(linesH);
