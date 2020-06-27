@@ -32,7 +32,7 @@ async function setup() {
             global.Module = {
                 onRuntimeInitialized: resolve
             };
-            global.cv = require('../libs/opencv.js');
+            global.cv = require('./opencv.js');
         });
     }
 }
