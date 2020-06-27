@@ -43,7 +43,7 @@ function finish(imagem) {
 
     contours.drawRects();
     // io.output();
-    // io.outputOriginal();
+    io.outputOriginal();
     let imagemName = imagem.substring(imagem.lastIndexOf('/')+1, imagem.lastIndexOf('.'))
     io.outputToFile('./out/output_' + imagemName + '.png')
     state.clear();
@@ -91,14 +91,16 @@ async function runImage(image) {
 
 async function start() {
     await setup();
+
+    cv.VideoCapture('HTMLVideoElement')
     
-    await runImage('./images/placa carro 1.jpg');
-    await runImage('./images/placa carro 2.jpg');
-    await runImage('./images/placa carro 3.jpg');
-    await runImage('./images/placa carro 4.jpg');
-    await runImage('./images/placa carro 5.jpg');
-    await runImage('./images/placa carro 6.jpg');
-    await runImage('./images/placa carro 7.jpg');
+    // await runImage('./input/images/placa carro 1.jpg');
+    // await runImage('./input/images/placa carro 2.jpg');
+    // await runImage('./input/images/placa carro 3.jpg');
+    // await runImage('./input/images/placa carro 4.jpg');
+    // await runImage('./input/images/placa carro 5.jpg');
+    // await runImage('./input/images/placa carro 6.jpg');
+    // await runImage('./input/images/placa carro 7.jpg');
 }
 
 start();

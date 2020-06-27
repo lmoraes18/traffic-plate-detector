@@ -1,4 +1,4 @@
-const { Canvas, createCanvas, Image, ImageData, loadImage } = require('canvas');
+const { Canvas, createCanvas, Image, ImageData, loadImage  } = require('canvas');
 const { JSDOM } = require('jsdom');
 const state = require('./state.js');
 
@@ -23,6 +23,7 @@ async function setup() {
         global.HTMLCanvasElement = Canvas;
         global.ImageData = ImageData;
         global.HTMLImageElement = Image;
+        global.HTMLVideoElement = Image;
     }
     
     // Load opencv.js using Promise instead of callbacks:
