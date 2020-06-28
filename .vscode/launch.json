@@ -45,6 +45,16 @@
             ],
             "program": "${workspaceFolder}\\index.js",
             "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60", "--debug", "true"]
-        }
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch camera",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\index.js",
+            "args": ["-m", "camera"]
+        },
     ]
 }

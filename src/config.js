@@ -14,8 +14,6 @@ const argv = yargs
         description: 'Input file for processing',
         alias: 'i',
         type: 'string',
-        required: true,
-        demand: true,
     })
     .option('output', {
         description: 'output result to file',

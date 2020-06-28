@@ -14,7 +14,7 @@ function readImage(file) {
 }
 
 function openVideoCapture(file) {
-    if (!file) {
+    if (!file && file != 0) {
         file = readline.question('Video input: ');
     }
 
