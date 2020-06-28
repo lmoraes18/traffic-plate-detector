@@ -1,88 +1,55 @@
-const { Canvas, createCanvas, Image, ImageData, loadImage } = require('canvas');
-const { JSDOM } = require('jsdom');
-const state = require('./state.js');
-const { writeFileSync } = require('fs');
+const cv = require('opencv4nodejs');
+const config = require('./config');
 
-function findContours() {
-    const content = state.getContent();
-    const image = content.image;
-    const perimeterThreshold = image.cols * 1.4 + image.rows * 1.4
+const MIN_PERIMETER_THRESHOLD = config["perim-min-threshold"];
+const MAX_PERIMETER_THRESHOLD = config["perim-max-threshold"];
 
-    let contours = new cv.MatVector();
-    let hierarchy = new cv.Mat();
-    let rects = [];
+function findContours(image) {
+    const perimeterThreshold = Math.min(image.cols * 1.4 + image.rows * 1.4, MAX_PERIMETER_THRESHOLD)
 
-    cv.findContours(image, contours, hierarchy, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
+    let contours = image.findContours(cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
+    let result = [];
+
+    for(let i = 0; i < contours.length; i++) {
+        const cnt = contours[i];
+        const perimeter = cnt.arcLength(true);
+
+        if (perimeter > MIN_PERIMETER_THRESHOLD && perimeter < perimeterThreshold) {
+            let tmp = cnt.approxPolyDP(0.03 * perimeter, true);
     
-    for(let i = 0; i < contours.size(); i++) {
-        const cnt = contours.get(i);
-        const perimeter = cv.arcLength(cnt, true);
-
-        if (perimeter > 70 && perimeter < perimeterThreshold) {
-            let tmp = new cv.Mat();
-            cv.approxPolyDP(cnt, tmp, 0.03 * perimeter, true);
-    
-            if (tmp.size().width * tmp.size().height == 4) {
-                let rect = cv.boundingRect(cnt);
+            if (tmp.length == 4) {
+                let rect = cnt.boundingRect();
                 
                 const ratio = rect.height / rect.width;
-                if (ratio > 0.29 && ratio < 0.45) { // 0.32 is the ratio in image 1
-                    rects.push(rect);
+                if (ratio > 0.29 && ratio < 0.40) { // 0.32 is the ratio in image 1
+                    result.push({
+                        rect: rect,
+                        contour: cnt
+                    });
                 }
-
             }
         }
     }
-    
-    content.contours = contours;
-    content.hierarchy = hierarchy;
-    content.rects = rects;
+
+    return result;
 }
 
-function drawContours() {
-    const content = state.getContent();
-    const image = content.image;
-    const contours = content.contours;
-    const hierarchy = content.hierarchy;
-    const color = new cv.Scalar(200, 255,0);
+function drawContours(image, result) {
+    const contours = result.map(a => a.contour);
+    const color = new cv.Vec(200, 255, 0);
 
-    for (let i = 0; i < contours.size(); ++i) {
-        cv.drawContours(image, contours, i, color, 1, cv.LINE_8, hierarchy, 100);
-    }
+    image.drawContours(contours, color, 0);
 }
 
-function drawContoursEmptyImage(outputFile) {
-    outputFile = outputFile || './out/output_contours.png';
-
-    const dst2 = cv.Mat.zeros(image.rows, image.cols, cv.CV_8UC3);
-    const color = new cv.Scalar(200, 255,0);
-    for (let i = 0; i < contours.size(); ++i) {
-        cv.drawContours(dst2, contours, i, color, 1, cv.LINE_8, hierarchy, 100);
-    }
-
-    const canvas = createCanvas(image.cols, image.rows);
-    cv.imshow(canvas, dst2);
-    writeFileSync(outputFile, canvas.toBuffer('image/jpeg'));
-    canvas.delete();
-}
-
-function drawRects() {
-    const content = state.getContent();
-    const image = content.image;
-    const rects = content.rects;
-    const color = new cv.Scalar(200, 0, 0);
-
-    for (let i = 0; i < rects.length; ++i) {
-        let rect = rects[i];
-        let point1 = new cv.Point(rect.x, rect.y);
-        let point2 = new cv.Point(rect.x + rect.width, rect.y + rect.height);
-        cv.rectangle(image, point1, point2, color, 2, cv.LINE_AA, 0);
-    }
+function drawRects(image, rect) {
+    const color = new cv.Vec(200, 255, 0);
+    let point1 = new cv.Point(rect.x, rect.y);
+    let point2 = new cv.Point(rect.x + rect.width, rect.y + rect.height);
+    image.drawRectangle(point1, point2, color);
 }
 
 module.exports = {
     findContours,
     drawContours,
-    drawContoursEmptyImage,
     drawRects
 }

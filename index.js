@@ -1,106 +1,121 @@
-const state = require('./src/state.js');
-const setup = require('./src/setup.js');
-const io = require('./src/io.js');
+const cv = require('opencv4nodejs');
+const config = require('./src/config');
+const io = require('./src/io');
+const contours = require('./src/contours');
+const plateDetection = require('./src/plateDetection');
+const misc = require('./src/misc');
 
-const rgbToGray = require('./src/rgbToGray.js');
-const histogram = require('./src/histogram.js');
-const threshold = require('./src/threshold.js');
-const convolution = require('./src/convolution.js');
-const contours = require('./src/contours.js');
-const morphoTransformation = require('./src/morphoTransformation.js');
-const hough = require('./src/hough.js');
+const MODE          = config["input-mode"];
+const INPUT         = config.input;
+const OUTPUT        = config.output;
 
-function thresholdOtsu() {
-    threshold.otsu();
-    convolution.gaussianBlur(5);
-    morphoTransformation.close(3);
+function main() {
+    switch (MODE) {
+        case 'image':
+            execImageMode()
+            break;
+        case 'video':
+            execVideoMode()
+            break;
+        case 'camera':
+            execCameraMode()
+            break;
+    }
 }
 
-function thresholdAdaptative() {
-    threshold.adaptative(9, 5);
-}
+function execImageMode() {
+    const image = io.readImage(INPUT);
+    const offset = misc.getRoiOffset(image);
 
-function thresholdHighFilter() {
-    convolution.highPassFilter();
-    convolution.gaussianBlur(5);
-    morphoTransformation.close(3);
-    threshold.otsu();
-}
+    let rects = plateDetection.processFrame(image);
+    rects.forEach(a => {
+        let rect = a.rect;
+        let offsetRect = new cv.Rect(rect.x + offset.x, rect.y + offset.y, rect.width, rect.height);
 
-function tryContours() {
-    contours.findContours();
+        contours.drawRects(image, offsetRect);
+    })
+    contours.drawRects(image, offset);
 
-    const content = state.getContent();
-    return content.rects.length;
-    // contours.drawContours();
-    // contours.drawRects();
-}
-
-function finish(imagem) {
-    const content = state.getContent();
-    const rects = content.rects;
-    console.log("encontrados " + rects.length + " candidatos para imagem " + imagem);
-
-    contours.drawRects();
-    // io.output();
-    io.outputOriginal();
-    let imagemName = imagem.substring(imagem.lastIndexOf('/')+1, imagem.lastIndexOf('.'))
-    io.outputToFile('./out/output_' + imagemName + '.png')
-    state.clear();
-}
-
-function finishUnsucessful(imagem) {
-    console.log("placa nao encontrada para imagem " + imagem);
-    state.clear();
-}
-
-async function runImage(image) {
-    await io.read(image);
-    io.roiImage();
-    rgbToGray();
-
-    state.pushImage();
-
-    // try otsu
-    thresholdOtsu();
-    if (tryContours() > 0) {
-        finish(image);
-        return;
+    if (rects.length == 0) {
+        console.log("Não foi possível encontrar nenhum candidado a placa de transito nesta imagem");
+    } else {
+        if (OUTPUT) {
+            io.writeImage(OUTPUT, image);
+        } else {
+            cv.imshowWait(INPUT, image);
+        }
     }
 
-    // try thresholdAdaptative
-    state.popImage();
-    state.pushImage();
-    thresholdAdaptative();
-    if (tryContours() > 0) {
-        finish(image);
-        return;
-    }
-
-    // try thresholdHighFilter
-    state.popImage();
-    state.pushImage();
-    thresholdHighFilter();
-    if (tryContours() > 0) {
-        finish(image);
-        return;
-    }
-
-    finishUnsucessful(image);
 }
 
-async function start() {
-    await setup();
-
-    cv.VideoCapture('HTMLVideoElement')
+function execVideoMode() {
+    let vCap = io.openVideoCapture(INPUT);
+    let vOut = !OUTPUT ? null : io.openVideoWriter(OUTPUT, vCap.get(6), vCap.get(cv.CAP_PROP_FPS), 
+        new cv.Size(vCap.get(cv.CAP_PROP_FRAME_WIDTH), vCap.get(cv.CAP_PROP_FRAME_HEIGHT)),
+        true)
     
-    // await runImage('./input/images/placa carro 1.jpg');
-    // await runImage('./input/images/placa carro 2.jpg');
-    // await runImage('./input/images/placa carro 3.jpg');
-    // await runImage('./input/images/placa carro 4.jpg');
-    // await runImage('./input/images/placa carro 5.jpg');
-    // await runImage('./input/images/placa carro 6.jpg');
-    // await runImage('./input/images/placa carro 7.jpg');
+    const FPS = vCap.get(cv.CAP_PROP_FPS);
+    function processVideo() {
+        let begin = Date.now();
+        let frame = vCap.read();
+    
+        if (!frame.empty) {
+            let offset = misc.getRoiOffset(frame);
+            let rects = plateDetection.processFrame(frame);
+            rects.forEach(a => {
+                let rect = a.rect;
+                let offsetRect = new cv.Rect(rect.x + offset.x, rect.y + offset.y, rect.width, rect.height);
+        
+                contours.drawRects(frame, offsetRect);
+            })
+            contours.drawRects(frame, offset);
+
+            if (vOut) {
+                vOut.write(frame);
+                setTimeout(processVideo, 0);
+            } else {
+                cv.imshow(INPUT, frame);
+                let key = cv.waitKey(1);
+                if (key > -1) return;
+                
+                let delay = 1000/FPS - (Date.now() - begin);
+                setTimeout(processVideo, delay);
+            }
+        }
+    }
+    // schedule first one.
+    setTimeout(processVideo, 0);
 }
 
-start();
+function execCameraMode() {
+    let vCap = io.openVideoCapture(0);
+    
+    const FPS = vCap.get(cv.CAP_PROP_FPS);
+    function processVideo() {
+        let begin = Date.now();
+        let frame = vCap.read();
+    
+        if (!frame.empty) {
+            let offset = misc.getRoiOffset(frame);
+            let rects = plateDetection.processFrame(frame);
+            rects.forEach(a => {
+                let rect = a.rect;
+                let offsetRect = new cv.Rect(rect.x + offset.x, rect.y + offset.y, rect.width, rect.height);
+        
+                contours.drawRects(frame, offsetRect);
+            })
+            contours.drawRects(frame, offset);
+
+            cv.imshow(INPUT, frame);
+            let key = cv.waitKey(1);
+            if (key > -1) return;
+            
+            let delay = 1000/FPS - (Date.now() - begin);
+            setTimeout(processVideo, delay);
+        }
+    }
+    // schedule first one.
+    setTimeout(processVideo, 0);
+}
+
+main()

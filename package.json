@@ -2,10 +2,9 @@
   "name": "visao-comp-trab1",
   "version": "1.0.0",
   "description": "Utilizado o build do com o docker, descrito neste link:\r     https://github.com/opencv/opencv/blob/4.3.0/doc/js_tutorials/js_setup/js_setup/js_setup.markdown",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node .",
-    "index_test1": "cd src && node index_test1.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,12 +19,9 @@
   },
   "homepage": "https://github.com/lmoraes18/visao-comp-trab1#readme",
   "dependencies": {
-    "canvas": "^2.6.1",
-    "core-js": "^3.6.5",
-    "glob": "^7.1.6",
-    "jimp": "^0.11.0",
-    "jsdom": "^16.2.2",
     "mimic-response": "^2.1.0",
-    "readline-sync": "^1.4.10"
+    "opencv4nodejs": "^5.6.0",
+    "readline-sync": "^1.4.10",
+    "yargs": "^15.3.1"
   }
 }
