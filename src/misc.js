@@ -19,7 +19,12 @@ function roi(frame) {
     return frame.getRegion(rect);
 }
 
+function denoise(frame) {
+    return cv.fastNlMeansDenoisingColored(frame)
+}
+
 module.exports = {
     getRoiOffset,
-    roi
+    roi,
+    denoise
 }

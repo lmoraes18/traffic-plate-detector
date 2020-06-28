@@ -1,8 +1,11 @@
 const cv = require('opencv4nodejs');
-const misc = require('./misc');
+const config = require('./config');
+
+const MIN_PERIMETER_THRESHOLD = config["perim-min-threshold"];
+const MAX_PERIMETER_THRESHOLD = config["perim-max-threshold"];
 
 function findContours(image) {
-    const perimeterThreshold = image.cols * 1.4 + image.rows * 1.4
+    const perimeterThreshold = Math.min(image.cols * 1.4 + image.rows * 1.4, MAX_PERIMETER_THRESHOLD)
 
     let contours = image.findContours(cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE);
     let result = [];
@@ -11,14 +14,14 @@ function findContours(image) {
         const cnt = contours[i];
         const perimeter = cnt.arcLength(true);
 
-        if (perimeter > 70 && perimeter < perimeterThreshold) {
+        if (perimeter > MIN_PERIMETER_THRESHOLD && perimeter < perimeterThreshold) {
             let tmp = cnt.approxPolyDP(0.03 * perimeter, true);
     
             if (tmp.length == 4) {
                 let rect = cnt.boundingRect();
                 
                 const ratio = rect.height / rect.width;
-                if (ratio > 0.29 && ratio < 0.45) { // 0.32 is the ratio in image 1
+                if (ratio > 0.29 && ratio < 0.40) { // 0.32 is the ratio in image 1
                     result.push({
                         rect: rect,
                         contour: cnt

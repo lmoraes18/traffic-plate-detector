@@ -52,6 +52,16 @@ const argv = yargs
         default: 60,
         coerce: (val) => val / 100.0,
     })
+    .option('perim-min-threshold', {
+        description: 'Sets the min threshold for rectagles perimeter',
+        type: 'number',
+        default: 70
+    })
+    .option('perim-max-threshold', {
+        description: 'Sets the max threshold for rectagles perimeter',
+        type: 'number',
+        default: 800
+    })
     .help()
     .alias('help', 'h')
     .argv;

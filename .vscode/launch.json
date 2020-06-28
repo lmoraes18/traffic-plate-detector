@@ -18,13 +18,33 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch image debug",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\index.js",
+            "args": ["-m", "image", "-i", ".\\input\\images\\placa carro 3.jpg", "--debug", "true"]
+
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch video",
             "skipFiles": [
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\index.js",
-            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60"]
-
+            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60",]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch video debug",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\index.js",
+            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60", "--debug", "true"]
         }
     ]
 }
