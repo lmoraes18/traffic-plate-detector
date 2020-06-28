@@ -22,6 +22,12 @@ const argv = yargs
         alias: 'o',
         type: 'string'
     })
+    .option('debug', {
+        description: 'debug algoritm',
+        alias: 'd',
+        type: 'boolean',
+        default: false
+    })
     .option('roi-top', {
         description: 'Sets the top of the area of interest (in %)',
         type: 'number',

@@ -1,7 +1,9 @@
 const cv = require('opencv4nodejs');
 const config = require('./src/config');
 const io = require('./src/io');
+const contours = require('./src/contours');
 const plateDetection = require('./src/plateDetection');
+const misc = require('./src/misc');
 
 const MODE          = config["input-mode"];
 const INPUT         = config.input;
@@ -22,18 +24,28 @@ function main() {
 }
 
 function execImageMode() {
-    const originalImage = io.readImage(INPUT);
+    const image = io.readImage(INPUT);
+    const offset = misc.getRoiOffset(image);
 
-    let rects = plateDetection.processFrame(originalImage);
+    let rects = plateDetection.processFrame(image);
+    rects.forEach(a => {
+        let rect = a.rect;
+        let offsetRect = new cv.Rect(rect.x + offset.x, rect.y + offset.y, rect.width, rect.height);
 
-    // TODO
-    let result = originalImage;
+        contours.drawRects(image, offsetRect);
+    })
+    contours.drawRects(image, offset);
 
-    if (OUTPUT) {
-        io.writeImage(OUTPUT, result);
+    if (rects.length == 0) {
+        console.log("Não foi possível encontrar nenhum candidado a placa de transito nesta imagem");
     } else {
-        cv.imshowWait(INPUT, result);
+        if (OUTPUT) {
+            io.writeImage(OUTPUT, image);
+        } else {
+            cv.imshowWait(INPUT, image);
+        }
     }
+
 }
 
 function execVideoMode() {
