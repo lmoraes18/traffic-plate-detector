@@ -1,14 +1,14 @@
-const state = require('./src/state.js');
-const setup = require('./src/setup.js');
-const io = require('./src/io.js');
+const state = require('./state.js');
+const setup = require('./setup.js');
+const io = require('./io.js');
 
-const rgbToGray = require('./src/rgbToGray.js');
-const histogram = require('./src/histogram.js');
-const threshold = require('./src/threshold.js');
-const convolution = require('./src/convolution.js');
-const contours = require('./src/contours.js');
-const morphoTransformation = require('./src/morphoTransformation.js');
-const hough = require('./src/hough.js');
+const rgbToGray = require('./rgbToGray.js');
+const histogram = require('./histogram.js');
+const threshold = require('./threshold.js');
+const convolution = require('./convolution.js');
+const contours = require('./contours.js');
+const morphoTransformation = require('./morphoTransformation.js');
+const hough = require('./hough.js');
 
 function thresholdOtsu() {
     threshold.otsu();

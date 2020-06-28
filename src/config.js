@@ -1,0 +1,53 @@
+const yargs = require('yargs');
+
+const argv = yargs
+    .usage('$0 [args]')
+    .option('input-mode', {
+        description: 'Input mode for processing',
+        alias: 'm',
+        type: 'string',
+        required: true,
+        demandOption: true,
+        choices: ['image', 'video', 'camera']
+    })
+    .option('input', {
+        description: 'Input file for processing',
+        alias: 'i',
+        type: 'string',
+        required: true,
+        demand: true,
+    })
+    .option('output', {
+        description: 'output result to file',
+        alias: 'o',
+        type: 'string'
+    })
+    .option('roi-top', {
+        description: 'Sets the top of the area of interest (in %)',
+        type: 'number',
+        default: 35,
+        coerce: (val) => val / 100.0,
+    })
+    .option('roi-left', {
+        description: 'Sets the left of the area of interest (in %)',
+        type: 'number',
+        default: 20,
+        coerce: (val) => val / 100.0,
+    })
+    .option('roi-height', {
+        description: 'Sets the height of the area of interest (in %)',
+        type: 'number',
+        default: 50,
+        coerce: (val) => val / 100.0,
+    })
+    .option('roi-width', {
+        description: 'Sets the width of the area of interest (in %)',
+        type: 'number',
+        default: 60,
+        coerce: (val) => val / 100.0,
+    })
+    .help()
+    .alias('help', 'h')
+    .argv;
+
+module.exports = argv;

@@ -7,11 +7,13 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Launch Program",
+            "name": "Launch image",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\index.js"
+            "program": "${workspaceFolder}\\index.js",
+            "args": ["-m", "image", "-i", ".\\input\\images\\placa carro 3.jpg"]
+
         }
     ]
 }
