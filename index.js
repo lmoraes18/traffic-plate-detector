@@ -49,7 +49,42 @@ function execImageMode() {
 }
 
 function execVideoMode() {
-    console.error("video mode not implemented")
+    let vCap = io.openVideoCapture(INPUT);
+    let vOut = !OUTPUT ? null : io.openVideoWriter(OUTPUT, vCap.get(6), vCap.get(cv.CAP_PROP_FPS), 
+        new cv.Size(vCap.get(cv.CAP_PROP_FRAME_WIDTH), vCap.get(cv.CAP_PROP_FRAME_HEIGHT)),
+        true)
+    
+    const FPS = vCap.get(cv.CAP_PROP_FPS);
+    function processVideo() {
+        let begin = Date.now();
+        let frame = vCap.read();
+    
+        if (!frame.empty) {
+            let offset = misc.getRoiOffset(frame);
+            let rects = plateDetection.processFrame(frame);
+            rects.forEach(a => {
+                let rect = a.rect;
+                let offsetRect = new cv.Rect(rect.x + offset.x, rect.y + offset.y, rect.width, rect.height);
+        
+                contours.drawRects(frame, offsetRect);
+            })
+            contours.drawRects(frame, offset);
+
+            if (vOut) {
+                vOut.write(frame);
+                setTimeout(processVideo, 0);
+            } else {
+                cv.imshow(INPUT, frame);
+                let key = cv.waitKey(1);
+                if (key > -1) return;
+                
+                let delay = 1000/FPS - (Date.now() - begin);
+                setTimeout(processVideo, delay);
+            }
+        }
+    }
+    // schedule first one.
+    setTimeout(processVideo, 0);
 }
 
 function execCameraMode() {

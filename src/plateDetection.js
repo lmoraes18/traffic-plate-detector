@@ -33,6 +33,8 @@ function tryOtsu(roi) {
 }
 
 function tryThresholdAdaptative(roi) {
+    return []
+
     let adapt = roi.adaptiveThreshold(255, cv.ADAPTIVE_THRESH_GAUSSIAN_C, cv.THRESH_BINARY_INV, 9, 5);
     if (config.debug) debugImage('adapt', adapt)
 
@@ -53,13 +55,13 @@ function tryThresholdHighFilter(roi) {
     const blur = borders.gaussianBlur(new cv.Size(5, 5), 2);
     if (config.debug) cv.imshowWait('blur', blur);
 
-    let denoise = blur.cvtColor(cv.COLOR_GRAY2RGB)
-    denoise = cv.fastNlMeansDenoisingColored(denoise)
-    denoise = denoise.cvtColor(cv.COLOR_RGB2GRAY)
-    if (config.debug) debugImage('denoise', denoise);
+    // let denoise = blur.cvtColor(cv.COLOR_GRAY2RGB)
+    // denoise = cv.fastNlMeansDenoisingColored(denoise)
+    // denoise = denoise.cvtColor(cv.COLOR_RGB2GRAY)
+    // if (config.debug) debugImage('denoise', denoise);
 
     // otsu
-    let otsu = denoise.threshold(0, 255, cv.THRESH_OTSU);
+    let otsu = blur.threshold(0, 255, cv.THRESH_OTSU);
     if (config.debug) debugImage('otsu', otsu);
 
     // close borderss

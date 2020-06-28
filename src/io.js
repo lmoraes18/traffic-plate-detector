@@ -36,13 +36,13 @@ function writeImage(fileOutput, image) {
     cv.imwrite(fileOutput, image);
 }
 
-function openVideoWriter(fileOutput, fps, width, heigh, isColor) {
+function openVideoWriter(fileOutput, fourccCode, fps, width, heigh, isColor) {
     if (!fileOutput) {
         fileOutput = readline.question('Video output (.avi): ');
     }
 
     return new cv.VideoWriter(fileOutput, 
-        cv.VideoWriter.fourcc('MJPG') , 
+        fourccCode, 
         fps,
         new cv.Size(width, heigh),
         isColor)

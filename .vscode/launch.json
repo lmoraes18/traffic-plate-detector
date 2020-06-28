@@ -14,6 +14,17 @@
             "program": "${workspaceFolder}\\index.js",
             "args": ["-m", "image", "-i", ".\\input\\images\\placa carro 3.jpg"]
 
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch video",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\index.js",
+            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60"]
+
         }
     ]
 }
