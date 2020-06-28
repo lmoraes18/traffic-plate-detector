@@ -27,11 +27,22 @@
         PATH=..., %OPENCV_BIN_DIR%
 
 
-## build
+## install
     Para baixar as bibliotecas necessárias para executar o projeto, rode no terminal:
         npm install
 
+## run
+    ```
+        node index.js --help
+        node index.js -m image -i "input/images/placa carro 3.jpg"
+        node index.js -m video -i "input/videos/video1-480p.mp4" --roi-height 60
+        node index.js -m camera
+    ```
+
 ## documentação e exemplos
+    https://justadudewhohacks.github.io/opencv4nodejs/docs/cv
+    https://www.npmjs.com/package/opencv4nodejs
+
     https://docs.opencv.org/master/dc/de6/tutorial_js_nodejs.html
     https://docs.opencv.org/master/d2/df0/tutorial_js_table_of_contents_imgproc.html
     https://docs.opencv.org/master/d7/dd0/tutorial_js_thresholding.html
