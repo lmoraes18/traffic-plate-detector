@@ -3,20 +3,33 @@ const config = require('./config');
 const misc = require('./misc');
 const contours = require('./contours');
 
+const THRESHOLD_METHODS = config.thresholdMethods;
+
 function processFrame(frame) {
     let roi = misc.roi(frame);
     roi = roi.cvtColor(cv.COLOR_RGBA2GRAY)
 
-    let c = tryOtsu(roi);
-    if (c.length > 0) return c;
+    let c = []
+    
+    if (THRESHOLD_METHODS.find(v => v == 'otsu' || v == 'all')) {
+        tryOtsu(roi).forEach(v => c.push(v));
+    }
 
-    c = tryOtsuMorphClose(roi);
-    if (c.length > 0) return c;
+    if (THRESHOLD_METHODS.find(v => v == 'otsu-morph' || v == 'all')) {
+        tryOtsuMorphClose(roi).forEach(v => c.push(v));
+    }
 
-    c = tryThresholdHighFilter(roi);
-    if (c.length > 0) return c;
+    if (THRESHOLD_METHODS.find(v => v == 'simpleBorderFilter' || v == 'all')) {
+        tryThresholdHighFilter(roi).forEach(v => c.push(v));
+    }
 
-    c = tryThresholdAdaptative(roi);
+    if (THRESHOLD_METHODS.find(v => v == 'simpleAdaptative' || v == 'all')) {
+        tryThresholdAdaptative(roi).forEach(v => c.push(v));
+    }
+
+    if (THRESHOLD_METHODS.find(v => v == 'canny' || v == 'all')) {
+        tryCanny(roi).forEach(v => c.push(v));
+    }
     
     return c;
 }
@@ -79,6 +92,13 @@ function tryThresholdHighFilter(roi) {
 
     // TODO
     return contours.findContours(otsu);
+}
+
+function tryCanny(roi) {
+    let canny = roi.canny(100, 0, 3, true);
+    if (config.debug) debugImage('canny-canny', canny);
+
+    return contours.findContours(canny);
 }
 
 function debugImage(windowName, image) {

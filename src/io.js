@@ -36,7 +36,7 @@ function writeImage(fileOutput, image) {
     cv.imwrite(fileOutput, image);
 }
 
-function openVideoWriter(fileOutput, fourccCode, fps, width, heigh, isColor) {
+function openVideoWriter(fileOutput, fourccCode, fps, width, heigh, isColor=true) {
     if (!fileOutput) {
         fileOutput = readline.question('Video output (.avi): ');
     }

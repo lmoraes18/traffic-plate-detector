@@ -15,6 +15,8 @@
     Para este projeto foi utilizada a versão 4.3.0. Outras versões provavelmente funcionam também, mas não foram testadas.
 
 ### opencv4nodejs (npm)    
+    https://www.npmjs.com/package/opencv4nodejs
+    
     Esta biblioteca irá realizar a ponte entre os binários nativos e o nodejs. Porém, para isso ocorrer, os binários devem ser recompilados para se adequar ao node-gyp (por isso é necessário o compilador do visual studio para windows).
     Para o correto 'build' e posterior funcionamento desta dependencia, configure as seguintes variaveis de ambiente:
 

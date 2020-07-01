@@ -26,6 +26,12 @@ const argv = yargs
         type: 'boolean',
         default: false
     })
+    .option('threshold-methods', {
+        description: 'methods of threshold enabled',
+        type: 'string',
+        default: ['otsu', 'otsu-morph', 'simpleBorderFilter'],
+        array: ['otsu', 'otsu-morph', 'simpleBorderFilter', 'simpleAdaptative', 'canny', 'all']
+    })
     .option('roi-top', {
         description: 'Sets the top of the area of interest (in %)',
         type: 'number',

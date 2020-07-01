@@ -29,6 +29,16 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Launch image test debug",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\index.js",
+            "args": ["-m", "image", "-i", ".\\input\\images\\placa carro 3.jpg", "--debug", "true", "--threshold-methods", "canny"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Launch video",
             "skipFiles": [
                 "<node_internals>/**"
@@ -45,6 +55,16 @@
             ],
             "program": "${workspaceFolder}\\index.js",
             "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60", "--debug", "true"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch video output",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}\\index.js",
+            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60", "-o", "out\\video.avi"]
         },
         {
             "type": "node",
