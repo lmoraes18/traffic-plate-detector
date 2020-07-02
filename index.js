@@ -50,8 +50,8 @@ function execImageMode() {
 
 function execVideoMode() {
     let vCap = io.openVideoCapture(INPUT);
-    let vOut = !OUTPUT ? null : io.openVideoWriter(OUTPUT, vCap.get(6), vCap.get(cv.CAP_PROP_FPS), 
-        new cv.Size(vCap.get(cv.CAP_PROP_FRAME_WIDTH), vCap.get(cv.CAP_PROP_FRAME_HEIGHT)),
+    let vOut = !OUTPUT ? null : io.openVideoWriter(OUTPUT, cv.VideoWriter.fourcc('MJPG'), vCap.get(cv.CAP_PROP_FPS),
+        vCap.get(cv.CAP_PROP_FRAME_WIDTH), vCap.get(cv.CAP_PROP_FRAME_HEIGHT),
         true)
     
     const FPS = vCap.get(cv.CAP_PROP_FPS);

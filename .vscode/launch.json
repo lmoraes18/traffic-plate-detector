@@ -64,7 +64,7 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\index.js",
-            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60", "-o", "out\\video.avi"]
+            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60", "-o", ".\\out\\video-480p.avi"]
         },
         {
             "type": "node",
