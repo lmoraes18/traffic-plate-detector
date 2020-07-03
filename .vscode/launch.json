@@ -12,7 +12,7 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\index.js",
-            "args": ["-m", "image", "-i", ".\\input\\images\\placa carro 3.jpg"]
+            "args": ["-m", "image", "-i", ".\\input\\images\\placa carro 2.jpg"]
 
         },
         {
@@ -44,7 +44,7 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\index.js",
-            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-height", "60",]
+            "args": ["-m", "video", "-i", ".\\input\\videos\\video1-480p.mp4", "--roi-top", "50", "--roi-height", "45", "--roi-left", "30", "--roi-width", "40", "--perim-max-threshold", "300", "--perim-min-threshold", "100",]
         },
         {
             "type": "node",

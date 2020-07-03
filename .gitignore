@@ -1,6 +1,7 @@
 # projeto
 out/*.png
 out/*.avi
+out/*.mp4
 
 # Logs
 logs

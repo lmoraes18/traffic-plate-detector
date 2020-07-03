@@ -21,7 +21,7 @@ function findContours(image) {
                 let rect = cnt.boundingRect();
                 
                 const ratio = rect.height / rect.width;
-                if (ratio > 0.29 && ratio < 0.40) { // 0.32 is the ratio in image 1
+                if (ratio > 0.20 && ratio < 0.45) { // 0.32 is the ratio in image 1
                     result.push({
                         rect: rect,
                         contour: cnt
