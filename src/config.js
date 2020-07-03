@@ -29,7 +29,7 @@ const argv = yargs
     .option('threshold-methods', {
         description: 'methods of threshold enabled',
         type: 'string',
-        default: ['otsu', 'otsu-morph', 'simpleBorderFilter'],
+        default: ['otsu', 'otsu-morph', 'simpleBorderFilter', 'canny'],
         array: ['otsu', 'otsu-morph', 'simpleBorderFilter', 'simpleAdaptative', 'canny', 'all']
     })
     .option('roi-top', {
